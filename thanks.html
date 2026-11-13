@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Thank you! | Kids & Toys Learning Academy</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .thanks { padding: 64px 0 96px; }
+  .dl { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 16px 0; border-bottom: 2px solid var(--mist); }
+  .dl strong { font-size: 1.1rem; }
+  .note { background: var(--mist); border-radius: 18px; padding: 16px 20px; margin-top: 24px; }
+</style>
+</head>
+<body>
+<header class="top"><a class="brand" href="/"><img src="assets/logo.png" alt="Kids & Toys Learning Academy"></a></header>
+<main class="thanks"><div class="wrap narrow" id="box">
+  <h1 class="sticker sticker-sm" style="color:#fff;background:var(--pink);display:inline-block;padding:18px 26px 22px;border-radius:22px">Thank you!</h1>
+  <p id="status">Checking your order…</p>
+  <div id="list"></div>
+    <p><a href="/">Back to the shop</a></p>
+</div></main>
+<script type="module">
+  import { SITE } from "./catalog.js";
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const sid = new URLSearchParams(location.search).get("order");
+  const status = document.getElementById("status");
+  try { localStorage.removeItem("kta-cart2"); } catch {}
+  (async () => {
+    if (!sid) { status.textContent = `We couldn't find your order link. Check your receipt email or write to ${SITE.email}.`; return; }
+    try {
+      const r = await fetch(`/api/order?order=${encodeURIComponent(sid)}`);
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error);
+      const pdfs = d.items;
+      status.textContent = `Your payment went through${d.email ? `. PayPal is emailing your receipt to ${d.email}` : ""}.`;
+      if (pdfs.length) {
+        document.getElementById("list").innerHTML = `<h2>Your printables</h2>` + pdfs.map((p) =>
+          `<div class="dl"><strong>${esc(p.name)}</strong><a class="btn btn-pink" href="/api/download?order=${encodeURIComponent(sid)}&item=${encodeURIComponent(p.id)}">Download</a></div>`).join("") +
+          `<p class="fine">Bookmark this page. Your links work for ${SITE.downloadDays} days.</p>`;
+      }
+    } catch (e) {
+      status.textContent = (e.message || "We couldn't load your order.") + ` If you paid, email ${SITE.email} with your receipt and we'll send your files.`;
+    }
+  })();
+</script>
+</body>
+</html>
