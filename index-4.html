@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kids & Toys Learning Academy | Where learning is fun</title>
+<meta name="description" content="Free and printable learning packs for kids ages 2–7, plus fun learning videos from the Kids & Toys Learning Academy YouTube channel.">
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="top">
+  <a class="brand" href="#top" aria-label="Kids & Toys Learning Academy home"><img src="assets/logo.png" alt="Kids & Toys Learning Academy"></a>
+  <nav class="nav" aria-label="Main">
+    <a href="#free">Free printables</a>
+    <a href="#shop">Shop</a>
+    <a href="#videos" data-view-link="videos">Videos</a>
+    <a href="#about">About</a>
+    <a href="#faq">FAQ</a>
+  </nav>
+  <button class="cart-btn" id="cartOpen" aria-label="Open cart">
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M7 18a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm10 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4ZM3 2h2.2l2.7 11.1a2 2 0 0 0 2 1.5h7.6a2 2 0 0 0 1.9-1.4L21.8 6H6.6L6 3.5A2 2 0 0 0 4 2H3Z"/></svg>
+    Cart <span class="count" id="cartCount">0</span>
+  </button>
+</header>
+
+<!-- ===== Home view ===== -->
+<main id="top" data-view="home">
+  <section class="hero">
+    <div class="bolt" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <h1 class="sticker">Where learning is fun!</h1>
+        <p>Printable learning packs for kids ages 2 to 7, made to go with our YouTube lessons. Start with a free one.</p>
+        <div class="cta-row">
+          <a class="btn btn-ink" href="#free">Get a free printable</a>
+          <a class="btn btn-white" href="#videos">Watch our videos</a>
+        </div>
+      </div>
+      <div class="hero-logo"><img src="assets/logo.png" alt=""></div>
+    </div>
+  </section>
+
+  <section class="free" id="free">
+    <div class="wrap">
+      <h2>Free printables</h2>
+      <p class="section-sub">Enter your email and the download starts right away.</p>
+      <div class="grid" id="freeGrid"></div>
+    </div>
+  </section>
+
+  <section class="shop" id="shop">
+    <div class="wrap">
+      <h2>Shop printables</h2>
+      <p class="section-sub">Pay with PayPal or card, then download instantly.</p>
+      <input class="search" id="shopSearch" type="search" placeholder="Search packs, like Rosa Parks or fractions" aria-label="Search the shop">
+      <div class="tabs" id="tabs" role="toolbar" aria-label="Shop categories"></div>
+      <p class="fine" id="shopCount"></p>
+      <div class="grid" id="grid"></div>
+      <p style="text-align:center;margin-top:24px"><button class="btn btn-white" id="moreBtn" hidden>Show more</button></p>
+    </div>
+  </section>
+
+  <section class="how">
+    <div class="wrap">
+      <h2>How printables work</h2>
+      <ol class="steps">
+        <li><span class="n">1</span><h3>Pick a pack</h3><p>Every pack lists the ages it's made for.</p></li>
+        <li><span class="n">2</span><h3>Pay with PayPal</h3><p>Use your PayPal account or any debit or credit card. No account needed.</p></li>
+        <li><span class="n">3</span><h3>Download and print</h3><p>Your PDFs are ready the moment you pay. Print as many copies as your family needs.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="videos">
+    <div class="wrap videos-inner">
+      <div>
+        <h2 class="sticker sticker-sm">New lessons on YouTube</h2>
+        <p>Letters, numbers, colors and shapes, taught with toys kids already love. Watch together, then keep the learning going with a printable.</p>
+        <a class="btn btn-ink" href="#videos">See all videos</a>
+      </div>
+      <img class="qr" src="assets/card.jpg" alt="Kids & Toys Learning Academy card with a YouTube QR code" loading="lazy">
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="wrap narrow">
+      <h2>About the academy</h2>
+      <p>Kids &amp; Toys Learning Academy started as a YouTube channel for little learners. Every video turns everyday toys into a lesson, and every printable is designed so a grown-up and a child can sit down together and practice what they just watched.</p>
+      <p>Questions or ideas for a new pack? Write to us at <a class="emailLink" href="#"></a>.</p>
+    </div>
+  </section>
+
+  <section class="faq" id="faq">
+    <div class="wrap narrow">
+      <h2>Questions parents ask</h2>
+      <div id="faqList"></div>
+    </div>
+  </section>
+</main>
+
+<!-- ===== Videos view ===== -->
+<main data-view="videos" hidden>
+  <section class="vhero">
+    <div class="wrap">
+      <h1 class="sticker">Watch and learn</h1>
+      <p>Short, playful lessons with toys. New videos every week on our YouTube channel.</p>
+      <a class="btn btn-ink ytLink" href="#" target="_blank" rel="noopener">Subscribe on YouTube</a>
+    </div>
+  </section>
+  <section class="vsec">
+    <div class="wrap">
+      <h2>Featured</h2>
+      <div class="vgrid featured" id="featuredGrid"></div>
+    </div>
+  </section>
+  <section class="vsec">
+    <div class="wrap">
+      <h2>Newest uploads</h2>
+      <div class="vgrid" id="latestGrid"><p class="vnote">Loading the latest videos…</p></div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-inner">
+    <img src="assets/logo.png" alt="" width="160">
+    <p>© <span id="yr"></span> Kids &amp; Toys Learning Academy. <a class="emailLink" href="#" style="color:#fff"></a></p>
+  </div>
+</footer>
+
+<!-- Free download dialog -->
+<dialog class="modal" id="freeModal" aria-labelledby="freeTitle">
+  <button class="icon-btn modal-close" id="freeClose" aria-label="Close">✕</button>
+  <form id="freeForm" novalidate>
+    <h2 id="freeTitle">Get it free</h2>
+    <p id="freeName"></p>
+    <label class="field">Your email
+      <input type="email" id="freeEmail" autocomplete="email" required placeholder="you@example.com">
+    </label>
+    <label class="check"><input type="checkbox" id="freeConsent">
+      <span>Send me this freebie plus occasional emails about new printables and videos. I can unsubscribe anytime.</span></label>
+    <button class="btn btn-pink wide" type="submit" id="freeSubmit">Download free</button>
+    <p class="error" id="freeErr" role="alert"></p>
+  </form>
+  <div class="done" id="freeDone" hidden>
+    <h2>Enjoy!</h2>
+    <p id="freeDoneMsg">Your download is starting. If it doesn't, use the button below.</p>
+    <a class="btn btn-pink wide" id="freeLink" href="#">Download PDF</a>
+  </div>
+</dialog>
+
+<!-- Cart drawer -->
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" aria-label="Cart" aria-hidden="true">
+  <div class="drawer-head">
+    <h2>Your cart</h2>
+    <button class="icon-btn" id="cartClose" aria-label="Close cart">✕</button>
+  </div>
+  <div class="drawer-body" id="cartItems"></div>
+  <div class="drawer-foot">
+    <div class="total"><span>Total</span><strong id="cartTotal">$0.00</strong></div>
+    <p class="fine">Printables download right after you pay.</p>
+    <div class="paypal-box" id="pp-buttons"></div>
+    <p class="error" id="checkoutErr" role="alert"></p>
+  </div>
+</aside>
+
+<!-- Chatbot -->
+<button class="chat-fab" id="chatOpen" aria-label="Ask a question">
+  <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="currentColor" d="M4 3h16a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H9l-5 4v-4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm3 6.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm5 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm5 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z"/></svg>
+  <span>Questions?</span>
+</button>
+<section class="chat" id="chat" aria-label="Chat with the academy helper" hidden>
+  <div class="chat-head">
+    <div><strong>Academy helper</strong><small>For grown-ups. Please don't share personal details.</small></div>
+    <button class="icon-btn" id="chatClose" aria-label="Close chat">✕</button>
+  </div>
+  <div class="chat-log" id="chatLog" aria-live="polite"></div>
+  <div class="chips" id="chips">
+    <button>Which pack for a 3-year-old?</button>
+    <button>What's free?</button>
+    <button>How do downloads work?</button>
+  </div>
+  <form class="chat-form" id="chatForm">
+    <input id="chatInput" autocomplete="off" maxlength="500" placeholder="Type your question" aria-label="Your question">
+    <button class="btn btn-pink" type="submit">Send</button>
+  </form>
+</section>
+
+<script type="module" src="app.js?v=4"></script>
+</body>
+</html>
