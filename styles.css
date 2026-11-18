@@ -245,3 +245,5 @@ h3 { font-size: 1.35rem; }
 .tab[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
 .tile img { object-fit: contain; background: #EAF6FA; }
 .cover { display: block; height: 100%; aspect-ratio: 3 / 4; background-image: url("assets/covers.jpg"); background-repeat: no-repeat; }
+.line .sw { overflow: hidden; display: grid; place-items: center; background: #EAF6FA; }
+.line .sw .cover { height: 100%; }

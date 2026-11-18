@@ -33,9 +33,7 @@ window.addEventListener("hashchange", route);
 
 // ---------- Product tiles ----------
 function tile(p) {
-  const art = p.cover !== undefined
-    ? `<span class="cover" role="img" aria-label="${esc(p.name)} cover" style="background-size:${COVER_GRID.cols * 100}% ${COVER_GRID.rows * 100}%;background-position:${(p.cover % COVER_GRID.cols) / (COVER_GRID.cols - 1) * 100}% ${Math.floor(p.cover / COVER_GRID.cols) / (COVER_GRID.rows - 1) * 100}%"></span>`
-    : p.image ? `<img src="${esc(p.image)}" alt="" loading="lazy">` : `<span class="mark" aria-hidden="true">${esc(p.mark || "")}</span>`;
+  const art = coverArt(p);
   const isFree = p.type === "free";
   const badge = isFree ? "Free" : p.bundle ? "Bundle" : p.price === 1 ? "$1 deal" : "20-page pack";
   return `<article class="card">
@@ -117,10 +115,15 @@ try { cart = JSON.parse(localStorage.getItem("kta-cart2") || "[]"); } catch { ca
 cart = cart.filter((id) => PAID.some((p) => p.id === id));
 const save = () => { try { localStorage.setItem("kta-cart2", JSON.stringify(cart)); } catch {} };
 
+function coverArt(p) {
+  return p.cover !== undefined
+    ? `<span class="cover" role="img" aria-label="${esc(p.name)} cover" style="background-size:${COVER_GRID.cols * 100}% ${COVER_GRID.rows * 100}%;background-position:${(p.cover % COVER_GRID.cols) / (COVER_GRID.cols - 1) * 100}% ${Math.floor(p.cover / COVER_GRID.cols) / (COVER_GRID.rows - 1) * 100}%"></span>`
+    : p.image ? `<img src="${esc(p.image)}" alt="" loading="lazy">` : `<span class="mark" aria-hidden="true">${esc(p.mark || "")}</span>`;
+}
 function renderCart() {
   $("#cartCount").textContent = cart.length;
   $("#cartItems").innerHTML = cart.length
-    ? cart.map((id) => { const p = find(id); return `<div class="line"><span class="sw" style="background:${p.color}">${esc(p.mark || "")}</span>
+    ? cart.map((id) => { const p = find(id); return `<div class="line"><span class="sw">${coverArt(p)}</span>
         <div><strong>${esc(p.name)}</strong><small>Instant download</small><br><button class="remove" data-rm="${p.id}">Remove</button></div>
         <strong>${money(p.price)}</strong></div>`; }).join("")
     : `<p class="empty">Your cart is empty. Printables you add will show up here.</p>`;
@@ -147,6 +150,7 @@ $("#scrim").onclick = closeCart;
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") { closeCart(); closeChat(); } });
 
 // ---------- PayPal ----------
+function showPPError(m) { $("#checkoutErr").textContent = m; console.error(m); }
 let paypalState = "idle";
 function loadPayPal() {
   if (paypalState !== "idle") return;
@@ -160,7 +164,8 @@ function loadPayPal() {
   }
   const s = document.createElement("script");
   s.src = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(SITE.paypalClientId)}&currency=${SITE.currency}&intent=capture&components=buttons`;
-  s.onload = renderPayPal;
+  s.onload = () => { try { renderPayPal(); } catch (e) { showPPError("PayPal loaded but couldn't draw its button: " + (e && e.message || e)); } };
+  setTimeout(() => { if (!$("#paypal iframe") && !$("#checkoutErr").textContent) showPPError("PayPal is taking too long to appear. If this keeps happening, try another browser or turn off ad blockers."); }, 12000);
   s.onerror = () => { $("#checkoutErr").textContent = "PayPal didn't load. Check your connection and refresh the page."; paypalState = "idle"; };
   document.head.appendChild(s);
 }
@@ -183,8 +188,8 @@ function renderPayPal() {
       cart = []; save();
       location.href = `/thanks?order=${encodeURIComponent(d.orderID)}`;
     },
-    onError: () => err("PayPal hit a problem. Please try again."),
-  }).render("#paypal");
+    onError: (e) => err("PayPal hit a problem: " + (e && e.message ? e.message : "please try again.")),
+  }).render("#paypal").catch((e) => showPPError("PayPal couldn't draw its button: " + (e && e.message || e)));
   paypalState = "ready";
 }
 renderCart();
